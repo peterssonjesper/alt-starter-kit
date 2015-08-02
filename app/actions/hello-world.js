@@ -1,9 +1,7 @@
-import alt from '../core/alt';
-
-class HelloActions {
+class HelloWorldActions {
   say(text) {
     return { text }
   }
 }
 
-export default alt.createActions(HelloActions);
+export default HelloWorldActions;

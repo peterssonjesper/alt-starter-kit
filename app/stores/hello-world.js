@@ -1,12 +1,7 @@
-import alt from '../core/alt';
-import HelloWorldActions from '../actions/hello-world';
-
 class HelloWorldStore {
 
   constructor() {
-    this.bindListeners({
-      say: HelloWorldActions.say
-    });
+    this.bindActions(this.alt.getActions('hello-world'));
 
     this.state = {
       text: 'world'
@@ -21,4 +16,4 @@ class HelloWorldStore {
 
 }
 
-export default alt.createStore(HelloWorldStore, 'HelloWorldStore');
+export default HelloWorldStore;

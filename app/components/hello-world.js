@@ -1,29 +1,42 @@
 import React from 'react';
-import connectToStores from 'alt/utils/connectToStores';
-import HelloWorldStore from '../stores/hello-world';
-import helloWorldActions from '../actions/hello-world';
 
-@connectToStores
 class HelloWorld extends React.Component {
 
-  static getStores() {
-    return [HelloWorldStore];
+  static contextTypes = {
+    flux: React.PropTypes.object.isRequired
   }
 
-  static getPropsFromStores() {
-    return HelloWorldStore.getState();
+  constructor(props, context) {
+    super(props, context);
+    this.state = this.getStateFromStores();
   }
 
   render() {
     return (
-      <div onClick={this.handleClick}>
-        Hello, {this.props.text}!
+      <div onClick={this.handleClick.bind(this)}>
+        Hello, {this.state.text}!
       </div>
     );
   }
 
   handleClick() {
-    helloWorldActions.say('there');
+    this.context.flux.getActions('hello-world').say('there');
+  }
+
+  getStateFromStores() {
+    return this.context.flux.getStore('hello-world').getState();
+  }
+
+  componentDidMount() {
+    this.unsubscribe = this.context.flux.getStore('hello-world').listen(this.onChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  onChange() {
+    this.setState(this.getStateFromStores());
   }
 
 }
